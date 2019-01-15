@@ -22,6 +22,7 @@ actions:
       - name: session
         required: true
         type: string
+        description: Session token
     returns:
       Success:
         schema:
@@ -33,6 +34,7 @@ actions:
       - name: session
         required: true
         type: string
+        description: Session token
     returns:
       Success:
         schema:
@@ -44,10 +46,11 @@ actions:
       - name: session
         required: true
         type: string
-        description:
+        description: Session token
       - name: category_id
         required: false
         type: string
+        description: Unique ID of category
     returns:
       Success:
         schema:
@@ -59,9 +62,11 @@ actions:
       - name: session
         required: true
         type: string
+        description: Session token
       - name: domain_list
         required: true
         type: array
+        description: List ofdomains to query
   add_to_custom_category:
     run: app.Zscaler.add_to_custom_category
     description: Adds a list of domains to a custom URL Category.
@@ -69,13 +74,15 @@ actions:
       - name: session
         required: true
         type: string
-        description: 
+        description: Session token
       - name: category_id
-        required: truel
+        required: true
         type: string
+        description: Unique ID of category
       - name: domain_list
         required: true
         type: array
+        description: List of domains to add
     returns:
       Success:
         schema:
