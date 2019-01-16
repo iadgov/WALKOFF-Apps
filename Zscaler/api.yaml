@@ -15,6 +15,10 @@ actions:
       Success:
         schema:
           type: string
+      Fail:
+         failure: true
+         schema:
+            type: string
   delete_session:
     run: app.Zscaler.delete_session
     description: Logs out current session from Zscaler
@@ -26,7 +30,7 @@ actions:
     returns:
       Success:
         schema:
-          type: object
+          type: string
   activate_config:
     run: app.Zscaler.activate_config
     description: Activates updated config
@@ -48,7 +52,6 @@ actions:
         type: string
         description: Session token
       - name: category_id
-        required: false
         type: string
         description: Unique ID of category
     returns:
@@ -66,7 +69,13 @@ actions:
       - name: domain_list
         required: true
         type: array
-        description: List ofdomains to query
+        description: List of domains to query
+    returns:
+       Success:
+          schema:
+             type: array
+             items:
+                type: object
   add_to_custom_category:
     run: app.Zscaler.add_to_custom_category
     description: Adds a list of domains to a custom URL Category.
@@ -111,5 +120,5 @@ devices:
         type: string
         description: Zscaler password
         encrypted: true
-        placeholder:     
+        placeholder: Zscaler password 
         required: true
