@@ -12,7 +12,7 @@ class Zscaler(App):
         App.__init__(self, name, device, context)
         self.api_key = self.device.get_encrypted_field('api_key')
         self.obfuscated_api_key = self.obfuscate_api_key()
-        self.api_username = self.device_fields['username'],
+        self.api_username = self.device_fields['username']
         self.api_password = self.device.get_encrypted_field('password')
         self.api_host = self.device_fields['zscaler_pop']
         self.api_base_url = 'https://%s/api/v1/' % (self.api_host)
@@ -31,23 +31,20 @@ class Zscaler(App):
             key += seed[int(str(n)[i])]
         for j in range(0, len(str(r)), 1):
             key += seed[int(str(r)[j]) + 2]
-
         return key, now
 
     ### Session
     @action
     def create_session(self):
         url = self.api_base_url + 'authenticatedSession'
+        key, now = self.obfuscate_api_key()
         data = {
-            'apiKey': self.obfuscate_api_key()[0],
-            'username': self.api_username[0],
+            'apiKey': key,
+            'username': self.api_username,
             'password': self.api_password,
-            'timestamp': self.obfuscate_api_key()[1]
+            'timestamp': now
         }
         response = requests.post(url, data=json.dumps(data), headers=self.api_headers)
-        print(response.text)
-        print(response.json())
-        print(response.status_code)
         if response.status_code == 200:
             return response.cookies['JSESSIONID']
         else:
@@ -96,12 +93,12 @@ class Zscaler(App):
     @action
     def add_to_custom_category(self, session, category_id, domain_list):
         category_info = self.url_categories(session, category_id)
-        
+        print(category_info.result['configuredName'])
         data = {
-            'configuredName': category_info['configuredName'],
-            'superCategory': category_info['superCategory'],
-            'dbCategorizedUrls': blocklist,
-            'description': category_info['description']
+            'configuredName': category_info.result['configuredName'],
+            'superCategory': category_info.result['superCategory'],
+            'dbCategorizedUrls': domain_list,
+            'description': category_info.result['description']
         }
         headers = self.api_headers
         headers['cookie'] = 'JSESSIONID=%s' % (session)
