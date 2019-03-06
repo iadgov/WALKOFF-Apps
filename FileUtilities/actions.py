@@ -9,7 +9,6 @@ from array import array
 
 logger = logging.getLogger(__name__)
 
-
 @action
 def exists_in_directory(path):
     if os.path.exists(path):
@@ -26,6 +25,8 @@ def create(filename, contents=None, overwrite=False):
         try:
             with open(filename, 'w') as new_file:
                 new_file.write(contents)
+                if contents[-1] != "\n":
+                    new_file.write("\n")
             return True, 'FileCreated'
         except IOError:
             print("Error writing or creating file.")
@@ -37,8 +38,10 @@ def append(filename, contents, newline=False):
     try:
         with open(filename, 'a') as f:
             if newline:
-                f.write("\n")
+                f.write("\n")  
             f.write(contents)
+            if contents[-1] != "\n":
+                f.write("\n")
         return True, 'FileWritten'
     except IOError:
         print("Error writing file.")
