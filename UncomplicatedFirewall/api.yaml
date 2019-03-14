@@ -75,6 +75,16 @@ actions:
         default: any
         minLength: 3
         example: '207.43.232.182'
+      - name: in_on
+        description: Interface to allow packets in on.
+        type: string
+        minLength: 2
+      - name: out_on
+        example: em1
+        description: Interface to allow packets out on.
+        type: string
+        minLength: 2
+        example: em1
       - name: to_address
         description: Address to allow connections from.
         type: string

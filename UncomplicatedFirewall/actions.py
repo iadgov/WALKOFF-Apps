@@ -43,8 +43,12 @@ def status(verbose=False):
 
 
 @action
-def allow(port, from_address='any', to_address='any', protocol='any', comment=None):
-    command = (['ufw', 'allow', 'from', from_address, 'to', to_address, 'port', port, 'proto', protocol])
+def allow(port, in_on=None, out-on=None, from_address='any', to_address='any', protocol='any', comment=None):
+    command = ['ufw', 'allow', 'from', from_address, 'to', to_address, 'port', port, 'proto', protocol]
+    if out_on:
+        command.insert(2, ['out', 'on', out_on])
+    if in_on:
+        command.insert(2, ['in', 'on', in_on])
     if comment:
         command.extend(['comment', comment])
     return execute_command(command)
